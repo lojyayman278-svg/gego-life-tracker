@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#0d9488">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ℊℯℊℴ 𝐋𝐢𝐟𝐞 𝐓𝐫𝐚𝐜𝐤𝐞𝐫</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --dark-teal: #0d9488;
+      --mid-teal: #14b8a6;
+      --light-teal: #ccfbf1;
+      --bg-teal: #f0fdfa;
+      --text-teal: #134e4a;
+      --white: #ffffff;
+      --orange: #f59e0b;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+
+    * { box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+
+    body {
+      margin: 0; padding: 0;
+      background-color: var(--bg-teal);
+      color: var(--text-teal);
+      display: flex; flex-direction: column; min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--dark-teal), var(--mid-teal));
+      color: white;
+      padding: 40px 20px 50px;
+      text-align: center;
+      border-radius: 0 0 40px 40px;
+      box-shadow: 0 4px 15px rgba(13, 148, 136, 0.2);
+    }
+
+    .points-section {
+      display: flex; justify-content: center; gap: 15px; margin-top: 15px;
+    }
+
+    .stat-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 20px; border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-size: 0.9rem; font-weight: bold;
+    }
+
+    .progress-container {
+      width: 70%; max-width: 250px;
+      background: rgba(255,255,255,0.2);
+      height: 8px; border-radius: 10px;
+      margin: 15px auto 0; overflow: hidden;
+    }
+    .progress-bar { width: 0%; height: 100%; background: var(--orange); transition: 0.8s ease-in-out; }
+
+    .container { 
+      padding: 0 20px; max-width: 550px; 
+      margin: -25px auto 40px; width: 100%; flex: 1;
+    }
+
+    .card {
+      background: var(--white); border-radius: 25px;
+      padding: 22px; margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(13, 148, 136, 0.05);
+      border: 1px solid var(--light-teal);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .card-header {
+      display: flex; align-items: center; gap: 12px;
+      color: var(--dark-teal); margin-bottom: 18px; font-weight: bold;
+    }
+
+    .card-header i {
+      background: var(--light-teal); width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 12px;
+    }
+
+    /* التحدي اليومي */
+    .challenge-box {
+      background: linear-gradient(to left, #fff7ed, #ffedd5);
+      border: 2px dashed var(--orange);
+      padding: 15px; border-radius: 20px;
+      text-align: center; margin-top: 10px;
+    }
+    .challenge-text { font-weight: bold; color: #9a3412; margin-bottom: 10px; display: block; }
+
+    .water-box {
+      margin-top: 15px; padding: 12px; border-radius: 12px;
+      font-size: 0.85rem; font-weight: bold; display: none;
+      border: 1px solid transparent; animation: fadeIn 0.3s ease;
+    }
+    .water-low { background: #fef2f2; color: var(--danger); border-color: #fee2e2; }
+    .water-good { background: #f0fdf4; color: var(--success); border-color: #dcfce7; }
+
+    .mood-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px;
+    }
+    .mood-btn {
+      background: var(--bg-teal); border: 1px solid var(--light-teal);
+      padding: 15px 5px; border-radius: 15px; cursor: pointer;
+      transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;
+    }
+    .mood-btn:hover { background: var(--light-teal); }
+
+    input, select {
+      width: 100%; padding: 12px; border-radius: 12px;
+      border: 1px solid #e2e8f0; margin-bottom: 10px; outline: none;
+    }
+
+    .btn-action {
+      width: 100%; padding: 14px; border-radius: 12px; border: none;
+      background: var(--dark-teal); color: white; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .todo-item {
+      background: #f8fafc; padding: 14px; border-radius: 12px;
+      margin-bottom: 8px; display: flex; justify-content: space-between;
+      align-items: center; border: 1px solid #f1f5f9;
+    }
+    .todo-content { flex-grow: 1; margin: 0 10px; cursor: pointer; }
+    .completed { background: #e2f2f0; opacity: 0.7; }
+    .completed .todo-content { text-decoration: line-through; }
+    
+    .delete-btn { color: var(--danger); cursor: pointer; padding: 5px; }
+
+    footer {
+      background: #e2e8f0; color: #475569; text-align: center;
+      padding: 20px; font-size: 0.9rem; border-top: 1px solid #cbd5e1;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 style="margin:0; font-size: 1.6rem;">ℊℯℊℴ 𝐋𝐢𝐟𝐞 𝐓𝐫𝐚𝐜𝐤𝐞𝐫</h1>
+  <div class="points-section">
+    <div class="stat-badge"><i class="fas fa-star" style="color:var(--orange)"></i> <span id="ptsCount">0</span></div>
+    <div class="stat-badge"><i class="fas fa-calendar" style="color:white"></i> <span id="currentDate">2026</span></div>
+  </div>
+  <div class="progress-container"><div class="progress-bar" id="pBar"></div></div>
+</header>
+
+<div class="container">
+
+  <div class="card" style="margin-top: 20px;">
+    <div class="card-header"><i class="fas fa-fire"></i> <span>تحدي اليوم</span></div>
+    <div class="challenge-box" id="challengeContainer">
+      <span class="challenge-text" id="dailyChallengeText">جاري تحميل تحدي اليوم...</span>
+      <button class="btn-action" style="background:var(--orange)" id="challengeBtn" onclick="completeChallenge()">
+        <i class="fas fa-trophy"></i> تم الإنجاز (+100 نقطة)
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><i class="fas fa-face-smile"></i> <span>كيف تشعر الآن؟</span></div>
+    <div class="mood-grid">
+      <button class="mood-btn" onclick="logMood('سعيد', 'fa-face-laugh-beam')"><i class="fas fa-face-laugh-beam"></i><span>سعيد</span></button>
+      <button class="mood-btn" onclick="logMood('هادئ', 'fa-face-smile')"><i class="fas fa-face-smile"></i><span>هادئ</span></button>
+      <button class="mood-btn" onclick="logMood('مرهق', 'fa-face-tired')"><i class="fas fa-face-tired"></i><span>مرهق</span></button>
+      <button class="mood-btn" onclick="logMood('متحمس', 'fa-face-grin-stars')"><i class="fas fa-face-grin-stars"></i><span>متحمس</span></button>
+    </div>
+    <div id="moodFeedback" style="font-size:0.8rem; text-align:center; font-weight:bold; color:var(--dark-teal);"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><i class="fas fa-glass-water"></i> <span>كمية المياه اليومية</span></div>
+    <input type="number" id="waterVal" step="0.5" placeholder="أدخل الكمية باللتر...">
+    <button class="btn-action" onclick="logWater()"><i class="fas fa-droplet"></i> تسجيل الكمية</button>
+    <div id="waterFeedback" class="water-box"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><i class="fas fa-person-running"></i> <span>النشاط الرياضي</span></div>
+    <select id="exerciseSelect">
+      <option value="" disabled selected>اختر الرياضة...</option>
+      <option value="السباحة">السباحة</option>
+      <option value="الجمباز">الجمباز</option>
+      <option value="الكرة الطائرة">الكرة الطائرة</option>
+      <option value="الجري">الجري</option>
+      <option value="الجيم">الجيم</option>
+      <option value="بلاتس">بلاتس</option>
+    </select>
+    <button class="btn-action" onclick="logExercise()"><i class="fas fa-check"></i> حفظ النشاط</button>
+    <div id="exerciseFeedback" style="font-size:0.85rem; margin-top:10px; font-weight:bold; display:none;"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><i class="fas fa-list-check"></i> <span>قائمة الإنجاز</span></div>
+    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+      <input type="text" id="todoInp" placeholder="مهمة جديدة..." style="margin-bottom:0;">
+      <button onclick="addTodo()" style="background:var(--dark-teal); color:white; border:none; border-radius:12px; width:45px; cursor:pointer;">
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+    <div id="todoLog"></div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 ℊℯℊℴ | كل الحقوق محفوظة
+</footer>
+
+<script>
+  let totalPoints = parseInt(localStorage.getItem('gegoPoints')) || 0;
+  
+  // قائمة تحديات عشوائية
+  const challenges = [
+    "قراءة 5 صفحات من كتابك المفضل",
+    "شرب 2 لتر مياه على مدار اليوم",
+    "ترتيب مكتبك أو غرفتك لمدة 10 دقائق",
+    "تعلم 5 كلمات جديدة بلغة أجنبية",
+    "ممارسة تمارين التمدد لمدة 5 دقائق",
+    "مساعدة شخص في المنزل بعمل بسيط",
+    "كتابة 3 أشياء أنت ممتن لها اليوم",
+    "المشي لمدة 30 دقيقة",
+    "ركز على العبادات والسنن اليومية"
+
+  ];
+
+  window.onload = () => {
+    updateDisplay();
+    loadTodos();
+    setDailyChallenge();
+    // عرض تاريخ اليوم
+    const d = new Date();
+    document.getElementById('currentDate').innerText = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+  };
+
+  function updateDisplay() {
+    document.getElementById('ptsCount').innerText = totalPoints;
+    localStorage.setItem('gegoPoints', totalPoints);
+    const pBar = document.getElementById('pBar');
+    let percent = (totalPoints / 1000) * 100;
+    pBar.style.width = Math.min(percent, 100) + "%";
+  }
+
+  // وظائف التحدي اليومي
+  function setDailyChallenge() {
+    const lastChallengeDate = localStorage.getItem('challengeDate');
+    const today = new Date().toDateString();
+    
+    // إذا كان التحدي جديد لهذا اليوم، اختر واحداً عشوائياً
+    if (lastChallengeDate !== today) {
+      const randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+      localStorage.setItem('dailyChallenge', randomChallenge);
+      localStorage.setItem('challengeDate', today);
+      localStorage.setItem('challengeStatus', 'pending');
+    }
+
+    document.getElementById('dailyChallengeText').innerText = localStorage.getItem('dailyChallenge');
+    
+    if (localStorage.getItem('challengeStatus') === 'completed') {
+      disableChallengeUI();
+    }
+  }
+
+  function completeChallenge() {
+    totalPoints += 100;
+    localStorage.setItem('challengeStatus', 'completed');
+    updateDisplay();
+    disableChallengeUI();
+    alert("مبروك! أنجزت تحدي اليوم وحصلت على 100 نقطة 🏆");
+  }
+
+  function disableChallengeUI() {
+    const btn = document.getElementById('challengeBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-check-double"></i> تم إنجاز تحدي اليوم';
+    btn.style.background = "#94a3b8";
+    document.getElementById('challengeContainer').style.opacity = "0.7";
+  }
+
+  // الوظائف الأخرى (نفس السابقة مع تحسينات طفيفة)
+  function logMood(mood, icon) {
+    const f = document.getElementById('moodFeedback');
+    f.innerHTML = `أنت تشعر بـ ${mood}.. يومك جميل!`;
+    totalPoints += 5; updateDisplay();
+  }
+
+  function logWater() {
+    const inp = document.getElementById('waterVal');
+    const v = parseFloat(inp.value);
+    const f = document.getElementById('waterFeedback');
+    if(!isNaN(v)) {
+      f.style.display = 'block';
+      f.className = 'water-box ' + (v < 1.5 ? 'water-low' : 'water-good');
+      f.innerHTML = v < 1.5 ? 'كمية قليلة! زد من شرب الماء.' : 'ممتاز! استمر في ترطيب جسمك.';
+      totalPoints += 15; updateDisplay();
+      inp.value = '';
+    }
+  }
+
+  function logExercise() {
+    const sel = document.getElementById('exerciseSelect');
+    if(sel.value) {
+      document.getElementById('exerciseFeedback').style.display = 'block';
+      document.getElementById('exerciseFeedback').innerText = `نشاط رائع في ${sel.value}!`;
+      totalPoints += 50; updateDisplay();
+      sel.selectedIndex = 0;
+    }
+  }
+
+  function addTodo() {
+    const inp = document.getElementById('todoInp');
+    if(inp.value.trim()) {
+      createTodoElement(inp.value.trim(), false);
+      saveTodos();
+      inp.value = '';
+    }
+  }
+
+  function createTodoElement(text, isCompleted) {
+    const div = document.createElement('div');
+    div.className = `todo-item ${isCompleted ? 'completed' : ''}`;
+    div.innerHTML = `<i class="fas fa-trash delete-btn" onclick="deleteTask(this)"></i>
+      <span class="todo-content" onclick="toggleTask(this.parentElement)">${text}</span>
+      <i class="fas fa-circle-check" style="color:${isCompleted ? 'var(--success)' : '#d1d5db'}"></i>`;
+    document.getElementById('todoLog').prepend(div);
+  }
+
+  function toggleTask(el) {
+    if(!el.classList.contains('completed')) {
+      el.classList.add('completed');
+      totalPoints += 20; updateDisplay(); saveTodos();
+    }
+  }
+
+  function deleteTask(btn) { btn.parentElement.remove(); saveTodos(); }
+
+  function saveTodos() {
+    const todos = Array.from(document.querySelectorAll('.todo-item')).map(it => ({
+      text: it.querySelector('.todo-content').innerText,
+      completed: it.classList.contains('completed')
+    }));
+    localStorage.setItem('gegoTodos', JSON.stringify(todos));
+  }
+
+  function loadTodos() {
+    const saved = JSON.parse(localStorage.getItem('gegoTodos') || "[]");
+    saved.reverse().forEach(t => createTodoElement(t.text, t.completed));
+  }
+</script>
+
+</body>
+</html>
